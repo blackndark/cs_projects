@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Symbol</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for holding in holdings %}
+            <tr>
+                <td>
+                    <form action="/buy" method="post">
+
+                            <input value="{{ holding.symbol }}" name="symbol" type="hidden">
+
+                        <div class="form-group">
+                            <button class="btn btn-primary" class="form-control" type="submit">Buy</button>
+                            <input autocomplete="off" autofocus class="form-control" name="shares" placeholder="Number of Shares" type="text">
+                        </div>
+                    </form>
+                </td>
+
+                <td> {{ holding.symbol }} </td>
+                <td> {{ holding.shares }} </td>
+                <td> {{ holding.current_price }} </td>
+                <td> {{ holding.current_value }} </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td> </td>
+                <td> {{ balance_list[0]["symbol"] }} </td>
+                <td> </td>
+                <td> </td>
+                <td> {{ balance_list[0]["current_value"] }} </td>
+            </tr>
+
+            <tr>
+                <td> </td>
+                <td> {{ balance_list[1]["symbol"] }} </td>
+                <td> </td>
+                <td> </td>
+                <td> {{ balance_list[1]["current_value"] }} </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
