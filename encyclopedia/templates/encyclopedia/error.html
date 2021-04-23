@@ -1,0 +1,13 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Something is wrong :(
+{% endblock %}
+
+{% block body %}
+    {% if not page_exist %}
+        <h3>{{ error_title }} is not a defined entry</h3>
+    {% else %}
+        <h3>{{ error_title }} is already a defined entry</h3>
+    {% endif %}
+{% endblock %}
