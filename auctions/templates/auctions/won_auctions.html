@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+{% load usd_filter %}
+
+{% block body %}
+    <h2>Won Auctions</h2>
+
+    {% if won_auctions %}
+
+    <div class="list-group">
+    {% for listing in won_auctions %}
+    <div class="col-sm-3">
+        <div class="card bg-light mb-3">
+            <img class="card-img-top" src="{{ listing.listing.image }}"/>
+            <div class="card-body">
+                <h5 class="card-title">{{ listing.listing.title }}</h5>
+                {% if listing.listing.maximum_bid %}
+                <h6 class="card-text"> Current Price: {{ listing.listing.maximum_bid | usd }}</h6>
+                {% else %}
+                <h6 class="card-text"> Current Price: {{ listing.listing.sarting_bid | usd }}</h6>
+                {% endif %}
+                <div class="text-center"><a href="{% url 'listing' listing.listing.title %}" class="btn btn-primary">Bid now</a></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+    {% else %}
+    <br>
+    <h3> You didn't win any auctions yet. </h3>
+
+    {% endif %}
+
+{% endblock %}
