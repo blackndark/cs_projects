@@ -1,0 +1,112 @@
+{% extends "auctions/layout.html" %}
+
+{% load usd_filter %}
+
+{% block body %}
+    {% if not listing.active %}
+    <h3 style="text-align:center;" >This listing is closed</h3>
+    {% endif %}
+    {% if not listing.active and current_user_highest_bidder %}
+    <h3 style="text-align:center;" >You won the auction!</h3>
+    {% endif %}
+
+    <div class="jumbotron jumbotron-fluid">
+
+    <h2> Listing: {{ listing.title }} </h2>
+
+        <img src="{{ listing.image }}" alt="image for {{ listing.title }}"/>
+        <hr class="my-4">
+        <h4>Details</h4> 
+    <ul>
+        <li>Listed by: {{ listing.user }}</li>
+        <li>Starting Bid: {{ listing.sarting_bid | usd }}</li>   
+        <li>Category: {{ listing.category }}</li>
+        <li>Description: {{ listing.description }}</li>
+    </ul>
+
+        {% if user.is_authenticated %}
+
+        {% if not watchlist_items %}
+        <form action="{% url 'add_remove_watchlist' listing.title %}">
+            <input type="submit" class="btn btn-success" value="Add to Watchlist">
+        </form>
+        {% else %}
+        <form action="{% url 'add_remove_watchlist' listing.title %}">
+            <input type="submit" class="btn btn-warning" value="Remove from Watchlist">
+        </form>
+        {% endif %}
+
+        {% else %}
+        <form action="{% url 'add_remove_watchlist' listing.title %}">
+            <input type="submit" class="btn btn-success" value="Add to Watchlist">
+        </form>
+        {% endif %}
+
+    <hr class="my-4">
+    
+    {% if max_bid %}
+    <h4>Current Bid: {{ max_bid | usd }}</h4>
+    {% else %}
+    <h4>Current Bid: {{ listing.sarting_bid | usd }}</h4>
+    {% endif %}
+
+    <div>
+    {% if bid_count %}
+    {{ bid_count }} bid(s) so far.
+    {% endif %}
+
+    {% if current_user_highest_bidder %}
+    Your bid is the highest current bid.
+    {% endif %}
+
+
+    <form class="form-inline" action="{% url 'bid' listing.title %}" method="POST">
+        <div class="form-group">
+    {% csrf_token %}
+    {{ bid_form }}
+
+    {% if listing.active %}
+    <input type="submit" class="btn btn-primary" value="Place Bid">
+    {% else %}
+    <input type="submit" class="btn btn-secondary" disabled value="Place Bid">
+    {% endif %}
+        </div>
+    </form>
+    {% if bid_error %}
+    Your new bid is lower than the current bid.
+    {% endif %}
+
+    <br>
+
+    {% if listing.active and current_user_creator and max_bid > listing.sarting_bid %}
+    <form action="{% url 'close_auction' listing.title %}">
+        <input type="submit" class="btn btn-danger" value="End Auction">
+    </form>
+    {% endif %}
+    </div>
+   
+    </div>
+
+    <form action="{% url 'comment' listing.title %}" method="POST">
+    {% csrf_token %}
+    {{ comment_form }}
+    <br>
+    <input type="submit" class="btn btn-primary">
+    </form>
+    <br>
+
+    {% for item in user_comments %}
+    <div class="card">
+        <div class="card-header">
+    {{ item.user }}    
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+    {{ item.comment }}
+            </blockquote>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+{% load usd_filter %}
+
+{% block body %}
+    <h2>Watchlist</h2>
+
+    {% if watchlist_items %}
+
+    <div class="list-group">
+    {% for listing in watchlist_items %}
+    <div class="col-sm-3">
+        <div class="card bg-light mb-3">
+            <img class="card-img-top" src="{{ listing.listings.image }}"/>
+            <div class="card-body">
+                <h5 class="card-title">{{ listing.listings.title }}</h5>
+                {% if listing.listings.maximum_bid %}
+                <h6 class="card-text"> Current Price: {{ listing.listings.maximum_bid | usd }}</h6>
+                {% else %}
+                <h6 class="card-text"> Current Price: {{ listing.listings.sarting_bid | usd }}</h6>
+                {% endif %}
+                <div class="text-center"><a href="{% url 'listing' listing.listings.title %}" class="btn btn-primary">Bid now</a></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+    {% else %}
+    <br>
+    <h3> Watchlist is empty. </h3>
+
+    {% endif %}
+
+{% endblock %}

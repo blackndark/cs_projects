@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+{% load usd_filter %}
+
+{% block body %}
+    <h2>{{ category }}</h2>
+
+    <div class="row">
+    {% for listing in category_listings %}
+
+    <div class="col-sm-3">
+        <div class="card bg-light mb-3">
+            <img class="card-img-top" src="{{ listing.image }}"/>
+            <div class="card-body">
+                <h5 class="card-title">{{ listing.title }}</h5>
+                {% if listing.maximum_bid %}
+                <h6 class="card-text"> Current Price: {{ listing.maximum_bid | usd }}</h6>
+                {% else %}
+                <h6 class="card-text"> Current Price: {{ listing.sarting_bid | usd }}</h6>
+                {% endif %}
+                <p class="card-text">{{ listing.description }}</p>
+                <div class="text-center"><a href="{% url 'listing' listing.title %}" class="btn btn-primary">Bid now</a></div>
+            </div>
+        </div>
+        </div>
+
+    {% endfor %}
+    </div>
+
+{% endblock %}
