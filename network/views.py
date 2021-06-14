@@ -106,25 +106,6 @@ def new_post(request):
     return JsonResponse({"message": "New post succesfully submitted."}, status=201)
 
 
-# Load all posts
-
-    # return JsonResponse([post.serialize() for post in posts], safe=False)
-
-
-# Load all posts of the given user. (Added to profile_followers)
-# def load_profile(request, username):
-
-    # Find the user with given username
-    #user = User.objects.get(username=username)
-
-    # All posts created by the given user
-    #user_posts = Post.objects.filter(creator=user)
-
-    # Return posts in reverse chronological order
-    #user_posts = user_posts.order_by("-timestamp").all()
-    # return JsonResponse([post.serialize() for post in user_posts], safe=False)
-
-
 # Check to see if the creator follower duo is already in the table. So that we'll decide on the state of the Follow/Unfollow button.
 @login_required(login_url="/login")
 def follow_button(request, username):
@@ -170,8 +151,6 @@ def profile_followers(request, username):
         "posts": posts,
         "profile_user": username
     })
-
-    # return JsonResponse({ "followers": followers_number,"following": following_number    })
 
 
 # Run follow function to create a new set of creator and follower
@@ -237,8 +216,6 @@ def following_posts(request):
     return render(request, "network/following.html", {
         "posts": posts
     })
-
-    # return JsonResponse([creator_post.serialize() for creator_post in creator_posts], safe=False)
 
 
 # Sending JsonResponse to fetch instantly Follow or Unfollow result without refreshing page
@@ -319,9 +296,8 @@ def postlikes(request, post_id):
         "post_likes": post.likes
     })
 
+
 # Sending JsonResponse to fetch instantly like buttons states without refreshing page
-
-
 def like_button(request, post_id):
 
     post = Post.objects.get(pk=post_id)
