@@ -9,6 +9,8 @@ Backend logic: Python
 Frontend logic: Javascript  
 User interface: HTML, Bootstrap  
 
+<img width="1666" alt="Screen Shot 2021-06-21 at 4 01 50 PM" src="https://user-images.githubusercontent.com/817503/122825446-f0715100-d2af-11eb-94c6-2d235173f72c.png">
+
 
 ## Features
 
